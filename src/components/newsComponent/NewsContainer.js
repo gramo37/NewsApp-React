@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
 import NewsItem from './News-item'
 import './news.css';
 import Loading from '../loading/Loading';
@@ -151,10 +150,12 @@ export class NewsContainer extends Component {
         }
     ]
 
-    // This code executes when prev button is clicked
-    onPrevClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=49911c14ecb74e849fbe6944c486d230&Page=${this.state.pageNumber - 1}&pageSize=${this.props.pageSize}`
-        // this.state.loading = true;
+    capitalize = (given_input)=>{
+        return (given_input.substring(0,1).toUpperCase() + given_input.substring(1, given_input.length))
+    }
+
+    updateNews = async ()=>{
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=49911c14ecb74e849fbe6944c486d230&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
         this.setState({
             articles: [],
             loading: true
@@ -163,30 +164,26 @@ export class NewsContainer extends Component {
         let parsedData = await data.json();
         this.setState({
             articles: parsedData.articles,
-            pageNumber: this.state.pageNumber - 1,
+            NoOfArticles: parsedData.totalResults,
             loading: false
         })
+        document.title = `${this.capitalize(this.props.category)} - GramoNews`
+    }
+
+    // This code executes when prev button is clicked
+    onPrevClick = async () => {
+        await this.setState({
+            pageNumber: this.state.pageNumber - 1
+        })
+        this.updateNews();
     }
 
     // This code executes when next button is clicked
     onNextClick = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=49911c14ecb74e849fbe6944c486d230&Page=${this.state.pageNumber + 1}&pageSize=${this.props.pageSize}`
-        this.setState({
-            articles: [],
-            loading: true
+        await this.setState({
+            pageNumber: this.state.pageNumber + 1
         })
-        let data = await fetch(url);
-        let parsedData = await data.json();
-
-        await setTimeout(() => {
-            console.log("Wait for 3 seconds");
-        }, 3000)
-
-        this.setState({
-            articles: parsedData.articles,
-            pageNumber: this.state.pageNumber + 1,
-            loading: false
-        })
+        this.updateNews();
     }
 
     // This is called first when the this component is used
@@ -199,6 +196,7 @@ export class NewsContainer extends Component {
             NoOfArticles: 0,
             loading: false
         }
+        document.title = `GramoNews`
     }
 
     // This is called second
@@ -234,20 +232,7 @@ export class NewsContainer extends Component {
 
     // This is called third
     async componentDidMount() {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=49911c14ecb74e849fbe6944c486d230&Page=1&pageSize=${this.props.pageSize}`
-        console.log(url)
-        this.setState({
-            articles: [],
-            loading: true
-        })
-        let data = await fetch(url);
-        let parsedData = await data.json();
-        this.setState({
-            articles: parsedData.articles,
-            pageNumber: 1,
-            NoOfArticles: parsedData.totalResults,
-            loading: false
-        })
+        this.updateNews();
     }
 }
 

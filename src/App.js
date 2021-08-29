@@ -37,6 +37,10 @@ export class App extends Component {
               <Navbar title="GramoNews" active="sports" />
               <NewsContainer pageSize={12} country="in" category="sports" />
             </Route>
+            <Route exact path="/business" key="business" >
+              <Navbar title="GramoNews" active="business" />
+              <NewsContainer pageSize={12} country="in" category="business" />
+            </Route>
             <Route exact path="/health" key="health" >
               <Navbar title="GramoNews" active="health" />
               <NewsContainer pageSize={12} country="in" category="health" />

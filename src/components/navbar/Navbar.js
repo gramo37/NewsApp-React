@@ -33,6 +33,9 @@ export class Navbar extends Component {
                                     <Link className={`nav-link ${this.props.active === 'sports'?'active':""}`} to="/sports">Sports</Link>
                                 </li>
                                 <li className="nav-item">
+                                    <Link className={`nav-link ${this.props.active === 'business'?'active':""}`} to="/business">Business</Link>
+                                </li>
+                                <li className="nav-item">
                                     <Link className={`nav-link ${this.props.active === 'entertainment'?'active':""}`} to="/entertainment">Entertainment</Link>
                                 </li>
                                 <li className="nav-item">
