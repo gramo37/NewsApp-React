@@ -1,0 +1,26 @@
+.card-item-container{
+    animation: slowLoad 1s ease;
+}
+
+.cardFooter{
+    display: flex;
+    flex-direction: column;
+}
+
+.readMore{
+    width: 100px;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+@keyframes slowLoad {
+    0%{
+        transform: translate(0, -100px);
+        opacity: 0;
+    }
+    100%{
+        transform: translate(0, 0);
+        opacity: 1;
+    }
+}

@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react'
+// import PropTypes from 'prop-types'
+import Navbar from './components/navbar/Navbar'
+import NewsContainer from './components/newsComponent/NewsContainer'
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends Component {
+  // static propTypes = {
+
+  // }
+  render() {
+    return (
+      <>
+        <Router>
+          <Switch>
+            <Route exact path="/" key="home" >
+              <Navbar title="GramoNews" active="home" />
+              <NewsContainer pageSize={12} country="in" category="general" />
+            </Route>
+            <Route exact path="/science" key="science" >
+              <Navbar title="GramoNews" active="science" />
+              <NewsContainer pageSize={12} country="in" category="science" />
+            </Route>
+            <Route exact path="/technology" key="technology" >
+              <Navbar title="GramoNews" active="technology" />
+              <NewsContainer pageSize={12} country="in" category="technology" />
+            </Route>
+            <Route exact path="/entertainment" key="entertainment" >
+              <Navbar title="GramoNews" active="entertainment" />
+              <NewsContainer pageSize={12} country="in" category="entertainment" />
+            </Route>
+            <Route exact path="/sports" key="sports" >
+              <Navbar title="GramoNews" active="sports" />
+              <NewsContainer pageSize={12} country="in" category="sports" />
+            </Route>
+            <Route exact path="/health" key="health" >
+              <Navbar title="GramoNews" active="health" />
+              <NewsContainer pageSize={12} country="in" category="health" />
+            </Route>
+          </Switch>
+        </Router>
+      </>
+    )
+  }
 }
 
-export default App;
+export default App
