@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
 import Navbar from './components/navbar/Navbar'
 import NewsContainer from './components/newsComponent/NewsContainer'
 import {
@@ -7,11 +6,10 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import PageNotFound from './components/search/PageNotFound';
 
 export class App extends Component {
-  // static propTypes = {
 
-  // }
   render() {
     return (
       <>
@@ -44,6 +42,11 @@ export class App extends Component {
             <Route exact path="/health" key="health" >
               <Navbar title="GramoNews" active="health" />
               <NewsContainer pageSize={12} country="in" category="health" />
+            </Route>
+            <Route exact path="/pageNotFound" key="pageNotFound" >
+              {/* <Navbar title="GramoNews" active="health" /> */}
+              {/* <NewsContainer pageSize={12} country="in" category="health" /> */}
+              < PageNotFound />
             </Route>
           </Switch>
         </Router>

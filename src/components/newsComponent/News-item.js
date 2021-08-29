@@ -13,7 +13,7 @@ export class NewsItem extends Component {
                         <p className="card-text">{desc}...</p>
 
                     </div>
-                        <a rel="noreferrer" href={newsUrl} target="_blank" className="btn btn-sm btn-primary readMore mb-2" >Read more</a>
+                    <a rel="noreferrer" href={newsUrl} target="_blank" className="btn btn-sm btn-primary readMore mb-2" >Read more</a>
                     <div className="card-footer text-muted cardFooter">
                         <p className="mx-4 text-center my-2 mb-0">Published on: {new Date(date).toGMTString()}</p>
                     </div>

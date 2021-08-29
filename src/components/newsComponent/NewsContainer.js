@@ -13,7 +13,7 @@ export class NewsContainer extends Component {
         category: "general"
     }
     static propTypes = {
-        country : PropTypes.string,
+        country: PropTypes.string,
         pageSize: PropTypes.number,
         category: PropTypes.string
     }
@@ -150,11 +150,11 @@ export class NewsContainer extends Component {
         }
     ]
 
-    capitalize = (given_input)=>{
-        return (given_input.substring(0,1).toUpperCase() + given_input.substring(1, given_input.length))
+    capitalize = (given_input) => {
+        return (given_input.substring(0, 1).toUpperCase() + given_input.substring(1, given_input.length))
     }
 
-    updateNews = async ()=>{
+    updateNews = async () => {
         let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=49911c14ecb74e849fbe6944c486d230&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
         this.setState({
             articles: [],
@@ -217,8 +217,8 @@ export class NewsContainer extends Component {
                                 imgUrl={ele.urlToImage}
 
                                 newsUrl={ele.url}
-                                
-                                date = {ele.publishedAt}/>
+
+                                date={ele.publishedAt} />
                         </div>)
                     })}
                     <div className="container d-flex justify-content-between">
