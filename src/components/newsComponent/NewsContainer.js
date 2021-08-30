@@ -3,6 +3,7 @@ import NewsItem from './News-item'
 import './news.css';
 import Loading from '../loading/Loading';
 import PropTypes from 'prop-types'
+import InfiniteScroll from "react-infinite-scroll-component";
 
 
 export class NewsContainer extends Component {
@@ -155,9 +156,8 @@ export class NewsContainer extends Component {
     }
 
     updateNews = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=49911c14ecb74e849fbe6944c486d230&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=19aef656c5684602b22af48af564a43f&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
         this.setState({
-            articles: [],
             loading: true
         })
         let data = await fetch(url);
@@ -186,15 +186,26 @@ export class NewsContainer extends Component {
         this.updateNews();
     }
 
+    fetchMoreData = async () => {
+        this.setState({pageNumber: this.state.pageNumber + 1})
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=19aef656c5684602b22af48af564a43f&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
+        let data = await fetch(url);
+        let parsedData = await data.json();
+        this.setState({
+            articles: this.state.articles.concat(parsedData.articles),
+            NoOfArticles: parsedData.totalResults
+        })
+    }
+
     // This is called first when the this component is used
     constructor() {
         super();
         // Setting of state initially
         this.state = {
-            articles: this.articles,
+            articles: [],
             pageNumber: 1,
             NoOfArticles: 0,
-            loading: false
+            loading: true
         }
         document.title = `GramoNews`
     }
@@ -206,26 +217,37 @@ export class NewsContainer extends Component {
                 <div className="text-center my-4" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
                     {this.state.loading && <Loading />}
                 </div>
-                <div className="container-fluid my-3 news-container">
-                    {this.state.articles.map((ele) => {
-                        return (<div key={ele.url}>
-                            <NewsItem
-                                title={ele.title ? (ele.title.length > 95 ? ele.title.substring(0, 94) : ele.title) : "Title Not Available"}
+                <InfiniteScroll
+                    dataLength={this.state.articles.length}
+                    next={this.fetchMoreData}
+                    hasMore={this.state.articles.length !== this.state.NoOfArticles}
+                    loader={<div className="text-center my-4" style={{ position: "relative"}}>
+                    {<Loading />}
+                </div>}
+                >
+                    <div className="container-fluid my-3 news-container">
+                        {this.state.articles.map((ele) => {
+                            return (<div key={ele.url}>
+                                <NewsItem
+                                    title={ele.title ? (ele.title.length > 95 ? ele.title.substring(0, 94) : ele.title) : "Title Not Available"}
 
-                                desc={ele.description ? (ele.description.length > 120 ? ele.description.substring(0, 119) : ele.description) : "Description Not Available"}
+                                    desc={ele.description ? (ele.description.length > 120 ? ele.description.substring(0, 119) : ele.description) : "Description Not Available"}
 
-                                imgUrl={ele.urlToImage}
+                                    imgUrl={ele.urlToImage}
 
-                                newsUrl={ele.url}
+                                    newsUrl={ele.url}
 
-                                date={ele.publishedAt} />
-                        </div>)
-                    })}
-                    <div className="container d-flex justify-content-between">
+                                    date={ele.publishedAt} />
+                            </div>)
+                        })}
+                    </div>
+                </InfiniteScroll>
+                {/* This code will generate two buttons 'next' and 'prev */}
+                {/* <div className="container d-flex justify-content-between">
                         <button disabled={this.state.pageNumber <= 1} type="button" className="btn btn-sm btn-dark" onClick={this.onPrevClick}>Prev</button>
                         <button disabled={this.state.pageNumber >= Math.ceil(this.state.NoOfArticles / this.props.pageSize)} type="button" className="btn btn-sm btn-dark" onClick={this.onNextClick}>Next</button>
-                    </div>:<div></div>
-                </div>
+                    </div>:<div></div> */}
+
             </>
         )
     }
