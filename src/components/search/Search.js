@@ -22,8 +22,11 @@ export class search extends Component {
     render() {
         return (
             <>
+            <div style={{display: "flex", flexDirection: "column"}}>
                 <form className="d-flex">
-                    <input className="form-control me-2" type="search" value={this.state.input} onChange={(event) => { this.setState({ input: event.target.value, showSuggestions: true }) }} placeholder="Search" aria-label="Search" />
+                    <input className="form-control me-2" type="search" value={this.state.input} onChange={(event) => { 
+                        this.setState({ input: event.target.value, showSuggestions: true }) 
+                        }} placeholder="Search" aria-label="Search" />
 
                     <button className="btn btn-outline-success" type="submit" onClick={(event) => {
                         event.preventDefault();
@@ -32,18 +35,21 @@ export class search extends Component {
                         <Link style={{ textDecoration: "none", color: "black" }} to={(this.state.input.toLowerCase() in { science: "", technology: "", sports: "", business: "", entertainment: "", health: "" }) ? `/${this.state.input}` : `/pageNotFound`}>Search</Link>
                     </button>
                 </form>
-                <ul className={`list-group ${(this.state.showSuggestions)?'showSuggestions':'hideSuggestions'}`}>
+                <ul style={{position: "absolute", width: "97%",margin: "38px 0px", zIndex: 10}} className={`list-group mb-0 ${(this.state.showSuggestions)?'showSuggestions':'hideSuggestions'}`}>
                     {JSONDATA.filter((val)=>{
                         if (this.state.input === ""){
-                            return val
+                            return ""
                         }
                         else if (val.category.toLowerCase().includes(this.state.input)) {
                             return val
                         }
                     }).map((val) => {
-                        return (<li className="list-group-item"><Link style={{color: "black", textDecoration: "none"}} to={`/${val.category}`}>{this.capitalize(`${val.category}`)}</Link></li>)
+                        if (val !== ""){
+                            return (<li className="list-group-item"><Link style={{color: "black", textDecoration: "none"}} to={`/${val.category}`}>{this.capitalize(`${val.category}`)}</Link></li>)
+                        }
                     })}
                 </ul>
+            </div>
             </>
         )
     }
