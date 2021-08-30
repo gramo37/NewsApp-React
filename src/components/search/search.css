@@ -1,0 +1,7 @@
+.showSuggestions{
+    display: flex;
+}
+
+.hideSuggestions{
+    display: none;
+}
