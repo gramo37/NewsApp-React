@@ -3,15 +3,8 @@ import { Link } from "react-router-dom";
 import Search from '../search/Search';
 
 export class Navbar extends Component {
-
-    processSearch = (input) => {
-        console.log(input)
-        
-    }
-
+    
     render() {
-
-
         return (
             <>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -44,7 +37,7 @@ export class Navbar extends Component {
                                     <Link className={`nav-link ${this.props.active === 'health' ? 'active' : ""}`} to="/health">Health</Link>
                                 </li>
                             </ul>
-                            <Search processSearch={this.processSearch} />
+                            <Search />
                         </div>
 
                     </div>

@@ -11,7 +11,7 @@ export class search extends Component {
         super();
         this.state = {
             input: "",
-            showSuggestions: false
+            showSuggestions: true
         }
     }
 
@@ -22,19 +22,21 @@ export class search extends Component {
     render() {
         return (
             <>
+
             <div style={{display: "flex", flexDirection: "column"}}>
+
                 <form className="d-flex">
                     <input className="form-control me-2" type="search" value={this.state.input} onChange={(event) => { 
-                        this.setState({ input: event.target.value, showSuggestions: true }) 
+                        this.setState({ input: event.target.value }) 
                         }} placeholder="Search" aria-label="Search" />
 
                     <button className="btn btn-outline-success" type="submit" onClick={(event) => {
-                        event.preventDefault();
-                        this.props.processSearch(this.state.input);
+                        event.preventDefault();  // This prevents page from refreshing
                     }}>
                         <Link style={{ textDecoration: "none", color: "black" }} to={(this.state.input.toLowerCase() in { science: "", technology: "", sports: "", business: "", entertainment: "", health: "" }) ? `/${this.state.input}` : `/pageNotFound`}>Search</Link>
                     </button>
                 </form>
+
                 <ul style={{position: "absolute", width: "97%",margin: "38px 0px", zIndex: 10}} className={`list-group mb-0 ${(this.state.showSuggestions)?'showSuggestions':'hideSuggestions'}`}>
                     {JSONDATA.filter((val)=>{
                         if (this.state.input === ""){

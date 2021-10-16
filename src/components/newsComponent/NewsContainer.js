@@ -156,18 +156,22 @@ export class NewsContainer extends Component {
     }
 
     updateNews = async () => {
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=19aef656c5684602b22af48af564a43f&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
+        this.props.setProgress(10)
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apikey}&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
         this.setState({
             loading: true
         })
         let data = await fetch(url);
+        this.props.setProgress(40)
         let parsedData = await data.json();
         this.setState({
             articles: parsedData.articles,
             NoOfArticles: parsedData.totalResults,
             loading: false
         })
+        this.props.setProgress(80)
         document.title = `${this.capitalize(this.props.category)} - GramoNews`
+        this.props.setProgress(100)
     }
 
     // This code executes when prev button is clicked
@@ -187,8 +191,8 @@ export class NewsContainer extends Component {
     }
 
     fetchMoreData = async () => {
-        this.setState({pageNumber: this.state.pageNumber + 1})
-        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=19aef656c5684602b22af48af564a43f&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
+        this.setState({ pageNumber: this.state.pageNumber + 1 })
+        let url = `https://newsapi.org/v2/top-headlines?country=${this.props.country}&category=${this.props.category}&apiKey=${this.props.apikey}&Page=${this.state.pageNumber}&pageSize=${this.props.pageSize}`
         let data = await fetch(url);
         let parsedData = await data.json();
         this.setState({
@@ -205,8 +209,10 @@ export class NewsContainer extends Component {
             articles: [],
             pageNumber: 1,
             NoOfArticles: 0,
-            loading: true
+            loading: true,
         }
+        // const [progress, setProgress] = useState(0)
+
         document.title = `GramoNews`
     }
 
@@ -215,19 +221,19 @@ export class NewsContainer extends Component {
         return (
             <>
                 <div className="text-center my-4" style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
-                    {this.state.loading && <Loading />}
+                    {/* {this.state.loading && <Loading />} */}
                 </div>
                 <InfiniteScroll
                     dataLength={this.state.articles.length}
                     next={this.fetchMoreData}
                     hasMore={this.state.articles.length !== this.state.NoOfArticles}
-                    loader={<div className="text-center my-4" style={{ position: "relative"}}>
-                    {<Loading />}
-                </div>}
+                    loader={<div className="text-center my-4" style={{ position: "relative" }}>
+                        {<Loading />}
+                    </div>}
                 >
                     <div className="container-fluid my-3 news-container">
                         {this.state.articles.map((ele) => {
-                            return (<div key={ele.url}>
+                            return (<div className="xyz" key={ele.url}>
                                 <NewsItem
                                     title={ele.title ? (ele.title.length > 95 ? ele.title.substring(0, 94) : ele.title) : "Title Not Available"}
 
@@ -242,12 +248,6 @@ export class NewsContainer extends Component {
                         })}
                     </div>
                 </InfiniteScroll>
-                {/* This code will generate two buttons 'next' and 'prev */}
-                {/* <div className="container d-flex justify-content-between">
-                        <button disabled={this.state.pageNumber <= 1} type="button" className="btn btn-sm btn-dark" onClick={this.onPrevClick}>Prev</button>
-                        <button disabled={this.state.pageNumber >= Math.ceil(this.state.NoOfArticles / this.props.pageSize)} type="button" className="btn btn-sm btn-dark" onClick={this.onNextClick}>Next</button>
-                    </div>:<div></div> */}
-
             </>
         )
     }
